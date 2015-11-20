@@ -1,0 +1,8 @@
+#! /bin/sh
+ECLIPSEDIR="${ECLIPSEDIR:-/home-reseau/laymard/4INFO/prolog/eclipse_basic}"
+LD_LIBRARY_PATH="$ECLIPSEDIR/lib/x86_64_linux:$LD_LIBRARY_PATH:/usr/local/lib"
+TCL_LIBRARY="${TCL_LIBRARY:-}"
+TK_LIBRARY="${TK_LIBRARY:-}"
+DAVINCIHOME="${DAVINCIHOME:-$ECLIPSEDIR/daVinci/x86_64_linux}"
+export ECLIPSEDIR TCL_LIBRARY TK_LIBRARY  LD_LIBRARY_PATH DAVINCIHOME 
+exec "/usr/bin/wish8.5" "/home-reseau/laymard/4INFO/prolog/eclipse_basic/lib_tcl/tktools.tcl" -- "$@"
