@@ -160,7 +160,28 @@ cousin(C,E):-
 le_roi_est_mort_vive_le_roi(R1,D,R2):-
     roi(R1,_,_,D),
     roi(R2,_,D,_).
-   
+=======================
+
+ancetre(A,X):-
+    parent(A,X).
+
+ancetre(A,X):-
+    ancetre(Z,X),
+	parent(A,Z).
+=================
+
+plus long que
+
+ancetre(A,X):-
+    parent(A,X).
+
+ancetre(A,X):-
+	parent(A,Z),
+    ancetre(Z,X).
+
+    ============
+
+
 
 
 
