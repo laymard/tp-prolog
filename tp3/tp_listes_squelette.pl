@@ -162,3 +162,7 @@ No (0.00s cpu)
 ?- tous_diff([]).
 No (0.00s cpu)
 */
+
+/*conc3(+X,+Y,+Z,?T) : T est la concatenation des listes X, Y et Z*/
+
+
