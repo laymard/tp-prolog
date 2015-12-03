@@ -6,17 +6,17 @@ TP Listes Prolog
 @version Annee scolaire 20__/20__
 
 % ==============================================================================
-% ============================================================================== 
+% ==============================================================================
 %	QUESTION 1
-% ============================================================================== 
+% ==============================================================================
 /* membre(?A,+X) : A est élément de X */
 
 membre(A,[A|_]).
 
-membre(A,[X|Y]) :- 
+membre(A,[X|Y]) :-
 	membre(A,Y),
 	\==(X,A).
-/* 
+/*
 TEST
 ?- membre(X, [1, 2, 3, 4, 5]).
 X = 1
@@ -34,19 +34,33 @@ No (0.04s cpu)
 
 /* compte(+A,+X,?N) : N est le nombre d'occurences de A dans la liste X. */
 
-/*probleme à partir de la deuxieme occurence de A*/
 compte(A,X,N) :-
-	compteur(A,X,0,N).
+	compter(A,X,0,N).
 
-compteur(_,[],Res,Res).
+compter(A,[],C,C).
 
-compteur(A,[A|Y],N,Res) :-
-	compteur(A,Y,M,Res),
-	M is N+1.
+compter(A,[A|Y],C,N):-
+	D is C+1,
+	compter(A,Y,D,N).
 
-compteur(A,[X|Y],N,Res) :-
-	compteur(A,Y,N,Res),
-	\==(X,A).
+compter(A,[X|Y],C,N):-
+	\==(A,X),
+	compter(A,Y,C,N).
+
+/* TEST
+[eclipse 33]: ?-compte(1,[1,2],N).
+
+N = 1
+Yes (0.00s cpu, solution 1, maybe more) ?
+[eclipse 34]: ?-compte(1,[1,1],N).
+
+N = 2
+Yes (0.00s cpu, solution 1, maybe more) ?
+[eclipse 35]: ?-compte(1,[2,2],N).
+
+N = 0
+Yes (0.00s cpu)
+*/
 
 /* renverser(+X,?Y) : Y est la liste à l'envers de X */
 
@@ -89,7 +103,7 @@ palindrome([Prem|X]):-
 /* TEST
 ?- palindrome([1, 2, 3, 2, 1]).
 Yes (0.00s cpu, solution 1, maybe more)
-No (0.01s cpu)	
+No (0.01s cpu)
 
 ?- palindrome([1, 2, 2, 1]).
 Yes (0.00s cpu, solution 1, maybe more)
@@ -135,7 +149,7 @@ hors_de(A,[]).
 hors_de(A,[X|L]):-
 	\==(A,X),
 	hors_de(A,L).
-	
+
 /* TEST?- hors_de(1, [1, 2, 4, 5]).
 No (0.00s cpu)
 ?- hors_de(3, [1, 2, 4, 5]).
@@ -149,7 +163,7 @@ tous_diff([_]).
 tous_diff([A|L]):-
 	hors_de(A,L),
 	tous_diff(L).
-	
+
 /* TEST
 ?- tous_diff([1, 2, 3, 4, 5]).
 Yes (0.00s cpu, solution 1, maybe more)
