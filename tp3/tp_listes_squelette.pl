@@ -73,7 +73,7 @@ Yes (0.00s cpu)
 
 */
 
-/* palind(+X) : X est une liste palindrome */
+/* palindrome(+X) : X est une liste palindrome */
 
 ote_dernier([A],[],A).
 
@@ -103,13 +103,62 @@ No (0.02s cpu)
 
 /* nieme(+X,+N,-A) : A est l'élément de rang N dans la liste X. */
 
-nieme([X|_],0,X).
 
-nieme([],Res,Res).
+nieme([X|_],Res,Res).
 
 nieme([_|L],N,R):-
 	nieme(L,M,R),
 	M is N+1.
 
+/* TEST
+?- nieme([0, 1, 2, 3, 4, 5], 0, X).
+X = 0
+Yes (0.00s cpu, solution 1, maybe more)
+?- nieme([0, 1, 2, 3, 4, 5], 1, X).
+X = 1
+Yes (0.00s cpu, solution 1, maybe more)
+?- nieme([0, 1, 2, 3, 4, 5], 2, X).
+X = 2
+Yes (0.00s cpu, solution 1, maybe more)
+?- nieme([0, 1, 2, 3, 4, 5], 3, X).
+X = 3
+Yes (0.00s cpu, solution 1, maybe more)
 
+?- nieme([], 0, X).
+No (0.00s cpu)
+*/
 
+/* hors_de(+A,+X) : A n'appartient pas à la liste X. */
+
+hors_de(A,[]).
+
+hors_de(A,[X|L]):-
+	\==(A,X),
+	hors_de(A,L).
+	
+/* TEST?- hors_de(1, [1, 2, 4, 5]).
+No (0.00s cpu)
+?- hors_de(3, [1, 2, 4, 5]).
+Yes (0.00s cpu)
+*/
+
+/* tous_diff(+X) : les éléments de la liste X sont tous différents. */
+
+tous_diff([_]).
+
+tous_diff([A|L]):-
+	hors_de(A,L),
+	tous_diff(L).
+	
+/* TEST
+?- tous_diff([1, 2, 3, 4, 5]).
+Yes (0.00s cpu, solution 1, maybe more)
+?- tous_diff([1, 3, 3, 4, 5]).
+No (0.00s cpu)
+?- tous_diff([3]).
+Yes (0.00s cpu, solution 1, maybe more)
+?- tous_diff([3, 3]).
+No (0.00s cpu)
+?- tous_diff([]).
+No (0.00s cpu)
+*/
