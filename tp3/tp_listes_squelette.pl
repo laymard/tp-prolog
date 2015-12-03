@@ -176,3 +176,105 @@ No (0.00s cpu)
 ?- tous_diff([]).
 No (0.00s cpu)
 */
+
+/* conc3(+X,+Y,+Z,?T) : T est la concaténation de X|Y|Z */
+
+
+
+conc3([X|W],Y,Z,[X|Reste]):-
+	conc3(W,Y,Z,Reste).
+
+
+conc3([],[X|Y],Z,[X|Reste]):-
+	conc3([],Y,Z,Reste).
+
+conc3([],[],Z,Z).
+
+/*Test
+
+[eclipse 47]: ?-conc3([1,2,3],[4,5,6],[7,8,9],N).
+
+N = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+*/
+
+/* conc2 pour le délire */
+
+conc2([],Y,Y).
+
+conc2([H|X],Y,[H|R]):-
+	conc2(X,Y,R).
+
+/*debute_par(+X,?Y) : la liste X débute par la liste Y*/
+
+debute_par([H|X],[H|Y]):-
+	debute_par(X,Y).
+
+debute_par(X,[]).
+debute_par([],[]).
+
+/* TEST
+
+[eclipse 49]: debute_par([1,2,3],[1,2]).
+
+Yes (0.00s cpu, solution 1, maybe more) ?
+[eclipse 50]: debute_par([1,2,3],[2,1]).
+
+No (0.00s cpu)
+*/
+
+/*sous_liste(+X,?Y) : la liste Y est une sous-liste de X*/
+
+
+sous_liste(X,Y):-
+	sous_liste2(X,Y,Y).
+
+sous_liste2(X,[],Z).
+sous_liste2([],[],Z).
+
+sous_liste2([H|X],[T|Y],Z):-
+	\==(H,T),
+	sous_liste2([H|X],Z,Z).
+
+sous_liste2([H|X],[H|Y],Z):-
+	sous_liste2(X,Y,Z).
+/*test
+[eclipse 2]: sous_liste([1,2,1,2,1,3],[1,2,3]).
+*** Overflow of the local/control stack!
+You can use the "-l kBytes" (LOCALSIZE) option to have a larger stack.
+Peak sizes were: local stack 2984 kbytes, control stack 37080 kbytes
+Abort
+[eclipse 3]: sous_liste([1,2,1,2,3],[1,2,3]).
+
+Yes (0.00s cpu, solution 1, maybe more) ?
+*/
+
+/*elim(X,Y) : la liste Y contient une seule instance de chaque nombre de X : [1,1] => [1]*/
+
+elim([],Y).
+elim([X],[X]).
+elim([H|X],Y):-
+	membre(H,Y),
+	elim(X,Y).
+elim([H|X],Y):-
+	elim(X,[H|Y]).
+
+/*TEST
+[eclipse 6]: elim([1,1],Y).
+
+Y = [1]
+Yes (0.00s cpu, solution 1, maybe more) ?
+[eclipse 7]: elim([1,2],Y).
+
+Y = [1, 2|_178]
+Yes (0.00s cpu, solution 1, maybe more) ?
+[eclipse 8]: elim([1,2,1],Y).
+
+Y = [1, 2|_180]
+Yes (0.00s cpu, solution 1, maybe more) ?
+*/
+
+/* tri(X,Y) */
+
+tri([X],[X]).
+
+inserer(E,L1,L2).
