@@ -275,6 +275,97 @@ Yes (0.00s cpu, solution 1, maybe more) ?
 
 /* tri(X,Y) */
 
-tri([X],[X]).
+tri(X, Y):-
+	trier(X, Y, []).
+trier([], Acc, Acc).
+trier([X|R], Y, Acc):-
+	inserer(X, Acc, NewAcc),
+	trier(R, Y, NewAcc).
 
-inserer(E,L1,L2).
+inserer(E, [], [E]).
+inserer(E, [P|R], [E,P|R]):-
+	E =< P.
+inserer(E, [P|R], [P|Z]):-
+	E > P,
+	inserer(E, R, Z).
+
+/*TEST
+
+[eclipse 39]: tri([3,2,1],Y).
+
+Y = [1, 2, 3]
+*/
+
+/*inclus(X,Y) : tout les éléments de X sont membres de Y*/
+
+inclus([],Y).
+
+inclus([H|X],Y):-
+	membre(H,Y),
+	inclus(X,Y).
+
+/*TEST
+Yes (0.02s cpu)
+[eclipse 41]: inclus([2,3],[1,2,3]).
+
+Yes (0.00s cpu, solution 1, maybe more) ?
+[eclipse 42]: inclus([4,5],[1,2,3]).
+
+No (0.00s cpu)
+*/
+
+/*non_inclus(X,Y) : au moins un élément n'est pas membre de Y '*/
+
+non_inclus([H|X],Y):-
+	hors_de(H,Y).
+
+non_inclus([H|X],Y):-
+	membre(H,Y),
+	non_inclus(X,Y).
+
+/*TEST
+[eclipse 44]: non_inclus([1,2],[1,2,3]).
+
+No (0.00s cpu)
+[eclipse 45]: non_inclus([2,4],[1,2,3]).
+
+Yes (0.00s cpu, solution 1, maybe more) ?
+[eclipse 46]: non_inclus([4,5],[1,2,3]).
+
+Yes (0.00s cpu, solution 1, maybe more) ?
+*/
+
+/*union_ens(X,Y,Z) : Z est l'union ensembliste de X et de Y  '*/
+
+union_ens(X,Y,Z):-
+	union_ens2(X,Y,A,Z).
+
+
+union_ens2([],[],A,A).
+union_ens2([H|X],Y,A,Z):-
+	membre(H,Y),
+	hors_de(H,A),
+	union_ens2(X,Y,[H|A],Z).
+
+union_ens2([H|X],Y,A,Z):-
+	hors_de(H,Y),
+	union_ens2(X,Y,A,Z).
+
+union_ens2([],[H|Y],A,Z):-
+	membre(H,A),
+	union_ens2([],Y,A,Z).
+
+union_ens2([],[H|Y],A,Z):-
+	hors_de(H,A),
+	union_ens2([],Y,[H|A],Z).
+
+/*TEST
+[eclipse 61]: union_ens([1,2,3],[1,2],L).
+
+L = [2, 1]
+Yes (0.00s cpu, solution 1, maybe more) ?
+[eclipse 62]: union([1,2],[3],L).
+
+L = [1, 2, 3]
+Yes (0.00s cpu)
+*/
