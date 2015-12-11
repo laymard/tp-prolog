@@ -136,6 +136,7 @@ division(F):-
 % Q2.7)
 
 total(F,R):-
+	livraison(F,_,_),
 	findall(X,livraison(F,P,X),L),
 	myadd(L,R).
 

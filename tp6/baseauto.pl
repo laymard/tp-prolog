@@ -154,6 +154,15 @@ myadd([H|L],R):-
 % SECTION 3 : Au delà de l’algèbre relationnelle
 % ============================================================================= 
 
+%Q3.1)
+
+composant(P,L):-
+	assemblage(P,X),
+	composant(X,[X|L]).
+
+composant(P,L):-
+	assemblage(P,L).
+
 
 
 
