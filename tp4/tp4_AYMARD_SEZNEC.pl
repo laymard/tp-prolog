@@ -3,7 +3,7 @@ TP 4 Arbres binaires - Prolog
 
 @author Laurent AYMRAD
 @author Blandine SEZNEC
-@version Annee scolaire 20__/20__
+@version Annee scolaire 2015/2016
 */
 
 
