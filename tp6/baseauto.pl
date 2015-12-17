@@ -1,8 +1,8 @@
 /*
 TP 7 Base de Données Déductives (BDD) - Prolog
 
-@author Prenom1 NOM1
-@author Prenom2 NOM2
+@author Laurent AYMARD
+@author Blandine SEZNEC
 @version Annee scolaire 20__/20__
 
 */
