@@ -1,11 +1,11 @@
-/**
+/*
 TP 7 Base de Données Déductives (BDD) - Prolog
 
 @author Prenom1 NOM1
 @author Prenom2 NOM2
 @version Annee scolaire 20__/20__
-*/
 
+*/
 
 /*
 ===============================================================================
@@ -13,9 +13,9 @@ TP 7 Base de Données Déductives (BDD) - Prolog
  Définition des prédicats
 ===============================================================================
 */
-% ============================================================================= 
+% =============================================================================
 % SECTION 1 : Base de données
-% ============================================================================= 
+% =============================================================================
 
 assemblage(voiture, porte, 4).
 assemblage(voiture, roue, 4).
@@ -27,7 +27,7 @@ assemblage(roue, pneu, 1).
 assemblage(moteur, piston, 4).
 assemblage(moteur, soupape, 16).
 
-           
+
 piece(p1, tole, lyon).
 piece(p2, jante, lyon).
 piece(p3, jante, marseille).
@@ -38,7 +38,7 @@ piece(p7, vitre, nancy).
 piece(p8, tole, marseille).
 piece(p9, vitre, marseille).
 
-                  
+
 demandeFournisseur(dupont, lyon).
 demandeFournisseur(michel, clermontFerrand).
 demandeFournisseur(durand, lille).
@@ -46,8 +46,8 @@ demandeFournisseur(dupond, lille).
 demandeFournisseur(martin, rennes).
 demandeFournisseur(smith, paris).
 demandeFournisseur(brown, marseille).
-          
-          
+
+
 fournisseurReference(f1, dupont, lyon).
 fournisseurReference(f2, durand, lille).
 fournisseurReference(f3, martin, rennes).
@@ -55,7 +55,7 @@ fournisseurReference(f4, michel, clermontFerrand).
 fournisseurReference(f5, smith, paris).
 fournisseurReference(f6, brown, marseille).
 
-                  
+
 livraison(f1, p1, 300).
 livraison(f2, p2, 200).
 livraison(f3, p3, 200).
@@ -68,18 +68,18 @@ livraison(f4, p2, 300).
 livraison(f4, p1, 300).
 
 
-% ============================================================================= 
+% =============================================================================
 % SECTION 2 : Opération relationnelles
-% ============================================================================= 
+% =============================================================================
 
-% Q2.1) pièce fabriquées à Lyon : 
+% Q2.1) pièce fabriquées à Lyon :
 ?-piece(X,Y,lyon).
 
 % Q2.2) noms et origine pièce
 
 ?-piece(_,N,L).
 
-% Q2.3) 
+% Q2.3)
 
 % union (morche pos)
 
@@ -100,12 +100,12 @@ union(X,Y):-
 difference(X,Y):-
 	demandeFournisseur(X,Y),
 	fournisseurReference(_,A,B),
-	\==(X,A),	
+	\==(X,A),
 	\==(Y,B).
 difference(X,Y):-
 	fournisseurReference(_,X,Y),
 	demandeFournisseur(A,B),
-	\==(X,A),	
+	\==(X,A),
 	\==(Y,B).
 
 %2.4)
@@ -150,18 +150,25 @@ myadd([H|L],R):-
 	R is Q + H.
 
 
-% ============================================================================= 
+% =============================================================================
 % SECTION 3 : Au delà de l’algèbre relationnelle
-% ============================================================================= 
+% =============================================================================
 
-%Q3.1)
+%Q3.1) composant(+P,-L) : rend une liste de composant nécessaire a la fabrication de P
 
-composant(P,L):-
-	assemblage(P,X),
-	composant(X,[X|L]).
+composant(Composant,Res) :-
+	findall(Piece,assemblage(Composant,Piece,_),EnsembleComp),
+	composant2(EnsembleComp,ResFils),
+	append(EnsembleComp,ResFils,ResTemp),
+	composant2(ResFils,ResTemp2),
+	append(ResTemp,ResTemp2,Res).
 
-composant(P,L):-
-	assemblage(P,L).
+composant2([],[]).
+composant2([Tete|Reste], EnsembleComp) :-
+	findall(Piece,assemblage(Tete,Piece,_),Ensemble1),
+	composant2(Reste,Ensemble2),
+	append(Ensemble1,Ensemble2,EnsembleComp).
+
 
 
 
@@ -175,7 +182,7 @@ composant(P,L):-
 
 
 ---------------------------------------
-Q2.1 : 
+Q2.1 :
 [eclipse 2]: piece(X,Y,lyon).
 
 X = p1
@@ -187,7 +194,7 @@ Y = jante
 Yes (0.00s cpu, solution 2)
 
 ---------------------------------------
-Q2.2 : 
+Q2.2 :
 [eclipse 3]: piece(_,N,L).
 
 N = tole
@@ -229,7 +236,7 @@ Yes (0.00s cpu, solution 9)
 Q2.3)
 
 
-intersection : 
+intersection :
 [eclipse 6]: demandeFournisseur(X, Y),fournisseurReference(_, X, Y).
 
 X = dupont
@@ -450,8 +457,13 @@ No (0.00s cpu)
 ------------------------------------------------------
 
 
+Q3.1)
+[eclipse 6]: composant(voiture,L).
+
+L = [porte, roue, moteur, tole, vitre, jante, pneu, piston, soupape]
+Yes (0.00s cpu)
+[eclipse 7]:
 
 
 
 */
-
