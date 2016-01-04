@@ -12,7 +12,7 @@ make_all_pairs([H|T],Res):-
 	mk2(H,[H|T],[H|T],T,[],Res).
 
 mk2(E,[H|T],L,L2,Acc,Res):-
-	mk2(E,T,[H|T],L2,[likes(E,H)|Acc],Res).
+	mk2(E,T,L,L2,[likes(E,H)|Acc],Res).
 
 mk2(E,[],L,[H|T],Acc,Res):-
 	mk2(H,L,L,T,Acc,Res).
