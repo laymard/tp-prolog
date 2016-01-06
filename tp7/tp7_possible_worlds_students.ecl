@@ -22,6 +22,7 @@ mk2(_,[],_,[],Acc,Acc).
 	
 
 % dana likes cody
+proposition1
 % bess does not like dana
 % cody does not like abby
 % nobody likes someone who does not like her
