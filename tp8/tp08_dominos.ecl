@@ -1,6 +1,6 @@
 % TP8 Laurent AMYARD et Blandine SEZNEC
 
-stones([stone(2, 2), stone(4, 6), stone(1, 2), stone(2, 4), stone(6, 2)]).
+stones([stone(2,2),stone(4, 6), stone(1, 2), stone(2, 4), stone(6, 2)]).
 
 s_double([stone(4, 6), stone(1, 2), stone(2, 4), stone(6, 2)]).
 /*
@@ -41,16 +41,16 @@ poser_chain(stone(X,Y),chain(L1,[Y|L2]),chain(L1,R2)):-
 	
 /*  poser(+,+,-) : stone * chain list * chain list 
 	ajout d'un domino au jeu */
-
-poser(stone(X,X), chainList([H]),chainList([chain([X],[double])|Res])) :-
-	poser_chain(stone(X,X),H,Res).
-	
+		
 poser(stone(X,Y), chainList([H]),chainList([Res])) :-
+	\==(X,Y),
 	poser_chain(stone(X,Y),H,Res).
 	
+poser(stone(X,X), chainList([H]),chainList([chain([X],[double]),Res])) :-
+	poser_chain(stone(X,X),H,Res).	
+
 poser(stone(X,Y), chainList([H|L]),chainList([H|Res])):-
 	poser(stone(X,Y),chainList(L),chainList(Res)).
-
 	
 /* chains(+,+,-) */
 
@@ -58,14 +58,14 @@ chains([],R,R).
 
 chains(Dom,Acc,Res):-
 	choose(Dom,stone(X,Y),Dom2),  	% Dom2 : liste des dominos privée du domino(X,Y)
-	poser(stone(X,Y),Acc,Res2),	% Res2 : liste des chaines avec domino (X,Y) ajouté
+	poser(stone(X,Y),Acc,Res2),		% Res2 : liste des chaines avec domino (X,Y) ajouté
 	chains(Dom2,Res2,Res).
 	
 /* domino(-) : chain list */
 
 domino(Chains):-
 	stones(Dominos),
-	chains(Dominos,_,Chains).
+	chains(Dominos,chainList([chain([],[])]),Chains).
 
 
 chains_to_list_of_list([], []).
@@ -134,4 +134,19 @@ No (0.00s cpu)
 Res = chainList([chain([5], [double])|chain([1, 2], [5, 5, 4])])
 Yes (0.00s cpu, solution 1, maybe more)
 ==================================================================================
+?- domino(Res).
+Res = chainList([chain([2], [double]), chain([1, 2], [2, 6, 4, 2])])
+Yes (0.00s cpu, solution 1, maybe more)
+Res = chainList([chain([2], [double]), chain([1, 2], [2, 4, 6, 2])])
+Yes (0.01s cpu, solution 2, maybe more)
+Res = chainList([chain([2], [double]), chain([2, 6, 4, 2], [1, 2])])
+Yes (0.01s cpu, solution 3, maybe more)
+Res = chainList([chain([2], [double]), chain([2, 4, 6, 2], [1, 2])])
+Yes (0.03s cpu, solution 4, maybe more)
+Res = chainList([chain([2], [double]), chain([2, 6, 4, 2], [1, 2])])
+Yes (0.05s cpu, solution 5, maybe more)
+Res = chainList([chain([2], [double]), chain([1, 2, 6, 4, 2], [2])])
+Yes (0.05s cpu, solution 6, maybe more)
+...
+...
 */
